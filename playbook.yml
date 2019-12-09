@@ -6,3 +6,11 @@
   tasks: 
    - name: Ping local machine 
      ping:
+   
+   - name: Create AWS EC2 Instance
+     ec2:
+      image: ami-0123b531fc646552f
+      region: ap-south-1
+      instance_type: t2.micro
+      instance_tags:
+        Name: Demo 
