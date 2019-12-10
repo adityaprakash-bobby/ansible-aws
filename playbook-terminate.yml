@@ -1,0 +1,24 @@
+---
+- hosts: all
+  name: Delete AWS Resources
+  connection: local
+  gather_facts: False
+  tasks: 
+   - name: Ping local machine 
+     ping:
+   
+   - name: Gather EC2 Instance IDs
+     ec2_instance_facts:
+         region: ap-south-1
+         filters: 
+          instance-state-name: running
+     register: instance_list
+
+   - set_fact: 
+      instance_ids: "{{instance_list.instances|map(attribute='instance_id')|list}}"
+  
+   - name: Delete AWS EC2 Instance
+     ec2:
+      region: ap-south-1
+      instance_ids: "{{instance_ids}}"
+      state: absent
